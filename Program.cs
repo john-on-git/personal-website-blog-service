@@ -32,19 +32,26 @@ app.UseHttpsRedirection();
 
 //set up endpoints
 app.MapGet(
-    $"/index",
+    $"/article/index",
     async (uint? offset, BlogContext db) =>
     {
         return offset==null ? 
-            await db.Articles
-                .OrderBy(x => x.Id)
+            await db.Articles //no offset
+                .OrderBy(x => x.PostedAt)
                 .ToListAsync()
             :
-            await db.Articles
-                .OrderBy(x => x.Id)
-                .Where(x => x.Id > offset)
+            await db.Articles //with offset
+                .OrderBy(x => x.PostedAt)
+                .Skip((int)offset)
                 .ToListAsync();
     }
+);
+
+app.MapGet(
+    $"/article/detail",
+    (uint id, BlogContext db) => db.Articles
+        .Where(x => x.Id==id)
+        .Single()
 );
 
 

@@ -47,8 +47,9 @@ app.MapPost(
     $"/article/create",
     async (string apiKey, string title, string authors, string HTMLSnippet, BlogContext db) =>
     {
-        if(apiKey == correctAPIKey)
+        if(apiKey == correctAPIKey) //ensure the client's authenticated
         {
+            //insert the new article
             db.Articles.Add(new Article(title, authors, HTMLSnippet));
             await db.SaveChangesAsync();
             return Results.Created();
@@ -63,15 +64,17 @@ app.MapPut(
     $"/article/update",
     async (string apiKey, uint id, string title, string authors, string HTMLSnippet, BlogContext db) =>
     {
-        if (apiKey == correctAPIKey)
+        if (apiKey == correctAPIKey) //ensure the client's authenticated
         {
+            //update the record if it exists
             if(db.Articles.Where(x => x.Id==id).Any())
             {
                 db.Articles.Update(new Article(id, title, authors, HTMLSnippet));
                 await db.SaveChangesAsync();
                 return Results.Ok();
             }
-            return Results.BadRequest();
+            else
+                return Results.BadRequest();
         }
         else
         {

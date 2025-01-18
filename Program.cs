@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+string API_KEY = File.ReadAllText("api_key.txt");
 
 // Add services to the container.
 builder.Services.AddDbContext<BlogContext>(options => {
@@ -51,6 +51,22 @@ app.MapGet(
     (uint id, BlogContext db) => db.Articles
         .Where(x => x.Id==id)
         .Single()
+);
+
+app.MapPost(
+    $"/article/create",
+    (string apiKey, string title, string authors, string HTMLSnippet, BlogContext db) =>
+    {
+        if (apiKey == API_KEY)
+        {
+            db.Articles.Add(new Article(title, authors, HTMLSnippet));
+            return Results.Ok();
+        }
+        else
+        {
+            return Results.Unauthorized();
+        }
+    }
 );
 
 

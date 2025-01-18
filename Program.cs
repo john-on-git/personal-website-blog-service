@@ -51,11 +51,31 @@ app.MapPost(
         {
             db.Articles.Add(new Article(title, authors, HTMLSnippet));
             await db.SaveChangesAsync();
-            return Results.Ok();
+            return Results.Created();
         }
         else
         {
             return Results.Unauthorized();
+        }
+    }
+);
+app.MapPut(
+    $"/article/update",
+    async (string apiKey, uint id, string title, string authors, string HTMLSnippet, BlogContext db) =>
+    {
+        if (apiKey == correctAPIKey)
+        {
+            if(db.Articles.Where(x => x.Id==id).Any())
+            {
+                db.Articles.Update(new Article(id, title, authors, HTMLSnippet));
+                await db.SaveChangesAsync();
+                return Results.Ok();
+            }
+            return Results.BadRequest();
+        }
+        else
+        {
+            return Results.Forbid();
         }
     }
 );

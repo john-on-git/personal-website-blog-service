@@ -1,25 +1,14 @@
 using JGWPersonalWebsiteBlogAPI;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-string API_KEY = File.ReadAllText("api_key.txt");
 
 // Add services to the container.
 builder.Services.AddDbContext<BlogContext>(options => {
     options
-        .UseSqlite("Data Source=blog.dat;Cache=Shared")
-        .UseSeeding((ctx, _) =>
-        {
-            BlogContext blogCtx = (BlogContext)ctx;
-            if(!blogCtx.Articles.Any()) //insert test articles if they don't already exist
-            {
-                blogCtx.Articles.Add(new Article("Test1", "John", "<p>Hello World!</p>"));
-                blogCtx.Articles.Add(new Article("Test2", "John", "<p>Hello Birds!</p>"));
-                blogCtx.Articles.Add(new Article("Test3", "John", "<p>Hello Sky!!!</p>"));
-                blogCtx.SaveChanges();
-            }
-        });
+        .UseSqlite("Data Source=blog.dat;Cache=Shared");
 });
 var app = builder.Build();
 
@@ -48,18 +37,20 @@ app.MapGet(
 
 app.MapGet(
     $"/article/detail",
-    (uint id, BlogContext db) => db.Articles
+    async (uint id, BlogContext db) => await db.Articles
         .Where(x => x.Id==id)
-        .Single()
+        .SingleOrDefaultAsync()
 );
 
+string correctAPIKey = File.ReadAllText("api_key.txt");
 app.MapPost(
     $"/article/create",
-    (string apiKey, string title, string authors, string HTMLSnippet, BlogContext db) =>
+    async (string apiKey, string title, string authors, string HTMLSnippet, BlogContext db) =>
     {
-        if (apiKey == API_KEY)
+        if(apiKey == correctAPIKey)
         {
             db.Articles.Add(new Article(title, authors, HTMLSnippet));
+            await db.SaveChangesAsync();
             return Results.Ok();
         }
         else
@@ -68,7 +59,6 @@ app.MapPost(
         }
     }
 );
-
 
 
 

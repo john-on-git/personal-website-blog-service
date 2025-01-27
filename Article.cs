@@ -1,8 +1,7 @@
-﻿namespace JGWPersonalWebsiteBlogAPI
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace JGWPersonalWebsiteBlogAPI
 {
-    /// <summary>
-    /// No, the real entity isn't called Article, don't bother.
-    /// </summary>
     public class Article
     {
         public uint Id { get; private set; } //PK

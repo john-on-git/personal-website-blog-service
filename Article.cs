@@ -2,6 +2,7 @@
 
 namespace JGWPersonalWebsiteBlogAPI
 {
+    [Table("XCBXZ93FH444ZLDFG1HO8hdfjksdgfsdualdKHSDK777SFGVJASADKBS9CBXZCFKYIU")]
     public class Article
     {
         public uint Id { get; private set; } //PK

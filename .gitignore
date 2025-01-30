@@ -2,3 +2,6 @@ api_key.txt
 blog.dat
 blog.dat-shm
 blog.dat-wal
+
+bin/*
+obj/*

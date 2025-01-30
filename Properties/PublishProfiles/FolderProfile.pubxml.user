@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\John\source\repos\JGWPersonalWebsiteBlogAPI\JGWPersonalWebsiteBlogAPI\bin\Release\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2025-01-29T23:48:50.6797873Z||;True|2025-01-29T23:46:03.7050457+00:00||;True|2025-01-29T23:38:21.4209476+00:00||;True|2025-01-29T23:34:03.9099023+00:00||;True|2025-01-29T23:17:38.9889045+00:00||;True|2025-01-29T23:11:07.9899006+00:00||;True|2025-01-29T23:07:49.6407902+00:00||;True|2025-01-29T22:53:18.0834156+00:00||;True|2025-01-29T19:58:05.9696844+00:00||;True|2025-01-29T19:57:55.9058536+00:00||;True|2025-01-29T18:20:41.7280988+00:00||;True|2025-01-29T15:43:17.4259383+00:00||;True|2025-01-29T15:43:09.4639526+00:00||;True|2025-01-27T10:09:02.8626239+00:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

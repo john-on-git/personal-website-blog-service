@@ -10,25 +10,29 @@ namespace JGWPersonalWebsiteBlogAPITests
 {
     public class Tests
     {
-        private CustomWebApplicationFactory<Program> appFactory;
         private string correctAPIKey;
+        private CustomWebApplicationFactory<Program> appFactory;
         private HttpClient client;
 
         [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
-            appFactory = new CustomWebApplicationFactory<Program>();
             correctAPIKey = Environment.GetEnvironmentVariable("JGW_PERSONAL_BLOG_API_KEY") ?? throw new FileNotFoundException();
         }
 
-        [OneTimeTearDown]
-        public void RunAfterAnyTests() => appFactory.Dispose();
-
         [SetUp]
-        public void Setup() => client = appFactory.CreateClient();
+        public void Setup()
+        {
+            appFactory = new CustomWebApplicationFactory<Program>();
+            client = appFactory.CreateClient();
+        }
 
         [TearDown]
-        public void TearDown() => client.Dispose();
+        public void TearDown()
+        {
+            client.Dispose();
+            appFactory.Dispose();
+        }
 
         [Test]
         public async Task TestCreateUnauthorized()
@@ -117,7 +121,21 @@ namespace JGWPersonalWebsiteBlogAPITests
         [Test]
         public async Task TestUpdateUnauthorized()
         {
-            throw new NotImplementedException();
+            //arrange 
+            var incorrectApiKey = $"This is not the correct API Key | {correctAPIKey}";
+            var postBody = new StringContent(
+                JsonConvert.SerializeObject(new Article("", "", "")),
+                System.Text.Encoding.UTF8,
+                MediaTypeNames.Application.Json
+            );
+
+            // act
+            using var res = await client.PutAsync($"/article/update?apiKey={incorrectApiKey}", postBody);
+
+            // assert
+
+            // the response code is correct
+            Assert.That(res.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
         }
 
         [Test]
@@ -155,7 +173,17 @@ namespace JGWPersonalWebsiteBlogAPITests
         [Test]
         public async Task TestDeleteUnauthorized()
         {
-            throw new NotImplementedException();
+            //arrange 
+            var incorrectApiKey = $"This is not the correct API Key | {correctAPIKey}";
+            const uint idToDelete = 1;
+
+            // act
+            using var res = await client.DeleteAsync($"/article/delete?apiKey={incorrectApiKey}&id={idToDelete}");
+
+            // assert
+
+            // the response code is correct
+            Assert.That(res.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
         }
 
         [Test]

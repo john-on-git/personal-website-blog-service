@@ -31,7 +31,13 @@ namespace JGWPersonalWebsiteBlogAPITests
         public void TearDown() => client.Dispose();
 
         [Test]
-        public async Task TestCreate()
+        public async Task TestCreateUnauthorized()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public async Task TestCreateSuccess()
         {
             // arrange
             const string title = "Test Article";
@@ -93,8 +99,15 @@ namespace JGWPersonalWebsiteBlogAPITests
             )); 
             });
         }
+
         [Test]
-        public async Task TestUpdate()
+        public async Task TestUpdateUnauthorized()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public async Task TestUpdateSuccess()
         {
             // arrange
             const string title = "Updated";
@@ -124,8 +137,15 @@ namespace JGWPersonalWebsiteBlogAPITests
                 Assert.That(responseBody.HTMLSnippet, Is.EqualTo(snippet));
             });
         }
+
         [Test]
-        public async Task TestDelete()
+        public async Task TestDeleteUnauthorized()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public async Task TestDeleteSuccess()
         {
             // arrange
             var articleToDelete = new Article(

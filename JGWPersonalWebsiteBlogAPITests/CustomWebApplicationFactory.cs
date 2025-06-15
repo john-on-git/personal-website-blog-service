@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
+using System.Threading;
 
 public class CustomWebApplicationFactory<TProgram>
     : WebApplicationFactory<TProgram> where TProgram : class
@@ -38,7 +40,43 @@ public class CustomWebApplicationFactory<TProgram>
             services.AddDbContext<BlogContext>((container, options) =>
             {
                 var connection = container.GetRequiredService<DbConnection>();
-                options.UseSqlite(connection);
+                options.UseSqlite(connection).UseSeeding((context, _) =>
+                {
+                    context.Set<Article>().Add(new Article(
+                        0,
+                        $"Test Seed Article to be Updated",
+                        "Not Updated",
+                        "Not Updated")
+                    );
+                    for (int i = 0; i < 99; i++)
+                    {
+                        context.Set<Article>().Add(new Article(
+                            $"Testing Seed Article {i}",
+                            "Nunit Tests Seeding",
+                            "<p>Hello World!</p>")
+                        );
+                    }
+                    context.SaveChanges();
+
+                })
+                .UseAsyncSeeding(async (context, _, cancellationToken) =>
+                {
+                    context.Set<Article>().Add(new Article(
+                        0,
+                        $"Test Seed Article to be Updated",
+                        "Not Updated",
+                        "Not Updated")
+                    );
+                    for (int i=0;i<99;i++)
+                    {
+                        context.Set<Article>().Add(new Article(
+                            $"Testing Seed Article {i}", 
+                            "Nunit Tests Seeding", 
+                            "<p>Hello World!</p>")
+                        );
+                    }
+                    await context.SaveChangesAsync(cancellationToken);
+                });
             });
         });
 

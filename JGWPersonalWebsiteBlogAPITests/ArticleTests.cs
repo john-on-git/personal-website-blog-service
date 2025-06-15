@@ -33,7 +33,21 @@ namespace JGWPersonalWebsiteBlogAPITests
         [Test]
         public async Task TestCreateUnauthorized()
         {
-            throw new NotImplementedException();
+            //arrange 
+            var incorrectApiKey = $"This is not the correct API Key | {correctAPIKey}";
+            var postBody = new StringContent(
+                JsonConvert.SerializeObject(new Article("", "", "")),
+                System.Text.Encoding.UTF8,
+                MediaTypeNames.Application.Json
+            );
+
+            // act
+            using var res = await client.PostAsync($"/article/create?apiKey={incorrectApiKey}", postBody);
+
+            // assert
+
+            // the response code is correct
+            Assert.That(res.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
         }
 
         [Test]

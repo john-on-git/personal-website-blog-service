@@ -173,10 +173,11 @@ namespace JGWPersonalWebsiteBlogAPITests
 
             // GET returns nothing
             using var getRes = await client.GetAsync($"/article?id={articleToDelete.Id}");
+            var getResBody = await getRes.Content.ReadAsStringAsync();
             Assert.Multiple(() =>
             {
                 Assert.That(getRes.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
-                Assert.That(getRes.Content, Is.EqualTo(null));
+                Assert.That(getResBody, Is.EqualTo(string.Empty));
             });
         }
     }

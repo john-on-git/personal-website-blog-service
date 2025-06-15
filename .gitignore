@@ -7,7 +7,7 @@ blog.dat-wal
 .vs
 
 JGWPersonalWebsiteBlogAPI/bin/*
-JGWPersonalWebsiteBlogAPIobj/*
+JGWPersonalWebsiteBlogAPI/obj/*
 
 JGWPersonalWebsiteBlogAPITests/bin/*
 JGWPersonalWebsiteBlogAPITests/obj/*

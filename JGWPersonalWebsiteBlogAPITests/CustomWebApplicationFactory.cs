@@ -9,11 +9,36 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
 using System.Threading;
 
+
 public class CustomWebApplicationFactory<TProgram>
     : WebApplicationFactory<TProgram> where TProgram : class
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        static void seedLogic(DbContext context)
+        {
+            context.Set<Article>().Add(new Article(
+                0,
+                "Test Seed Article to be Updated",
+                "Nunit Tests Seeding",
+                "Not Updated")
+            );
+            context.Set<Article>().Add(new Article(
+                1,
+                "Test Seed Article to be Deleted",
+                "Nunit Tests Seeding",
+                "Delete Me!")
+            );
+            for (int i = 0; i < 98; i++)
+            {
+                context.Set<Article>().Add(new Article(
+                    $"Testing Seed Article {i}",
+                    "Nunit Tests Seeding",
+                    "<p>Hello World!</p>")
+                );
+            }
+        }
+
         builder.ConfigureServices(services =>
         {
             var dbContextDescriptor = services.SingleOrDefault(
@@ -42,39 +67,13 @@ public class CustomWebApplicationFactory<TProgram>
                 var connection = container.GetRequiredService<DbConnection>();
                 options.UseSqlite(connection).UseSeeding((context, _) =>
                 {
-                    context.Set<Article>().Add(new Article(
-                        0,
-                        $"Test Seed Article to be Updated",
-                        "Not Updated",
-                        "Not Updated")
-                    );
-                    for (int i = 0; i < 99; i++)
-                    {
-                        context.Set<Article>().Add(new Article(
-                            $"Testing Seed Article {i}",
-                            "Nunit Tests Seeding",
-                            "<p>Hello World!</p>")
-                        );
-                    }
+                    seedLogic(context);
                     context.SaveChanges();
 
                 })
                 .UseAsyncSeeding(async (context, _, cancellationToken) =>
                 {
-                    context.Set<Article>().Add(new Article(
-                        0,
-                        $"Test Seed Article to be Updated",
-                        "Not Updated",
-                        "Not Updated")
-                    );
-                    for (int i=0;i<99;i++)
-                    {
-                        context.Set<Article>().Add(new Article(
-                            $"Testing Seed Article {i}", 
-                            "Nunit Tests Seeding", 
-                            "<p>Hello World!</p>")
-                        );
-                    }
+                    seedLogic(context);
                     await context.SaveChangesAsync(cancellationToken);
                 });
             });

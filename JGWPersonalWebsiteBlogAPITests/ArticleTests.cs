@@ -1,6 +1,7 @@
 using JGWPersonalWebsiteBlogAPI;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
+using NUnit.Framework.Internal;
 using System.Net;
 using System.Net.Http.Json;
 using System.Net.Mime;
@@ -47,7 +48,7 @@ namespace JGWPersonalWebsiteBlogAPITests
 
             // assert
 
-            // the reponse code is correct
+            // the response code is correct
             Assert.That(res.StatusCode, Is.EqualTo(HttpStatusCode.Created));
 
             // the article was created with the correct values
@@ -71,7 +72,7 @@ namespace JGWPersonalWebsiteBlogAPITests
 
             // assert
 
-            // the reponse code is correct
+            // the response code is correct
             Assert.That(res.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
             // the response contains twelve articles
@@ -97,7 +98,7 @@ namespace JGWPersonalWebsiteBlogAPITests
         {
             // arrange
             const string title = "Updated";
-            const string authors = "Updated";
+            const string authors = "Nunit Tests";
             const string snippet = "Updated";
             var postBody = new StringContent(
                 JsonConvert.SerializeObject(new Article(0, title, authors, snippet)),
@@ -110,7 +111,7 @@ namespace JGWPersonalWebsiteBlogAPITests
 
             // assert
 
-            // the reponse code is correct
+            // the response code is correct
             Assert.That(res.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
             // the article was updated with the correct values
@@ -121,6 +122,41 @@ namespace JGWPersonalWebsiteBlogAPITests
                 Assert.That(responseBody.Title, Is.EqualTo(title));
                 Assert.That(responseBody.Authors, Is.EqualTo(authors));
                 Assert.That(responseBody.HTMLSnippet, Is.EqualTo(snippet));
+            });
+        }
+        [Test]
+        public async Task TestDelete()
+        {
+            // arrange
+            var articleToDelete = new Article(
+                1,
+                "Test Seed Article to be Deleted",
+                "Nunit Tests Seeding",
+                "Delete Me!"
+            );
+
+            // act
+            using var deleteRes = await client.DeleteAsync($"/article/delete?apiKey={correctAPIKey}&id={articleToDelete.Id}");
+
+            // assert
+
+            // the response code is correct
+            Assert.That(deleteRes.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
+            // the article was updated with the correct values
+            var deleteResBody = await deleteRes.Content.ReadFromJsonAsync<Article>();
+            Assert.That(deleteResBody, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(deleteResBody, Is.EqualTo(articleToDelete));
+            });
+
+            // GET returns nothing
+            using var getRes = await client.DeleteAsync($"/article?id={articleToDelete.Id}");
+            Assert.Multiple(() =>
+            {
+                Assert.That(getRes.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+                Assert.That(getRes.Content, Is.EqualTo(null));
             });
         }
     }

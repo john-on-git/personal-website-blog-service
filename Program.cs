@@ -87,9 +87,9 @@ app.MapPost(
             if(article.Id == null)
             {
                 //insert the new article
-                db.Articles.Add(article);
+                var created = db.Articles.Add(article);
                 await db.SaveChangesAsync();
-                return Results.Created();
+                return Results.Created($"/article/details?id={created.Entity.Id}", created.Entity);
             }
             else
             {
@@ -113,9 +113,9 @@ app.MapPut(
             //update the record if it exists
             if (db.Articles.Where(x => x.Id == article.Id).Any())
             {
-                db.Articles.Update(article);
+                var updated = db.Articles.Update(article);
                 await db.SaveChangesAsync();
-                return Results.Ok();
+                return Results.Ok(updated.Entity);
             }
             else
                 return Results.BadRequest();
@@ -137,9 +137,9 @@ app.MapDelete(
             //update the record if it exists
             if (db.Articles.Where(x => x.Id == id).Any())
             {
-                db.Articles.Remove(new Article(id, "", "", ""));
+                var removed = db.Articles.Remove(new Article(id, "", "", ""));
                 await db.SaveChangesAsync();
-                return Results.Ok();
+                return Results.Ok(removed.Entity);
             }
             else
                 return Results.BadRequest();

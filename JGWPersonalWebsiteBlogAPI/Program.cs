@@ -107,7 +107,7 @@ app.MapPost(
         }
         else
         {
-            return Results.Forbid();
+            return Results.StatusCode(StatusCodes.Status403Forbidden);
         }
     }
 ).RequireRateLimiting("fixed");
@@ -133,7 +133,7 @@ app.MapPut(
         }
         else
         {
-            return Results.Forbid();
+            return Results.StatusCode(StatusCodes.Status403Forbidden);
         }
     }
 ).RequireRateLimiting("fixed");
@@ -160,7 +160,7 @@ app.MapDelete(
         }
         else
         {
-            return Results.Forbid();
+            return Results.StatusCode(StatusCodes.Status403Forbidden);
         }
     }
 ).RequireRateLimiting("fixed");

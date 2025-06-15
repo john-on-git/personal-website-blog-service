@@ -1,16 +1,12 @@
 using JGWPersonalWebsiteBlogAPI;
-using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Diagnostics;
-using System.Globalization;
+
 
 //try get API key
-if (!File.Exists("api_key.txt"))
-    throw new FileNotFoundException("No API key provided: create an api_key.txt in root directory containing a secure password.");
-string correctAPIKey = File.ReadAllText("api_key.txt").Trim();
+var correctAPIKey = Environment.GetEnvironmentVariable("JGW_PERSONAL_BLOG_API_KEY") ?? throw new FileNotFoundException("No API key provided: set environmental variable JGW_PERSONAL_BLOG_API_KEY to a secure password.");
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -31,6 +27,15 @@ builder.Services.AddRateLimiter(_ => _.AddFixedWindowLimiter(
         options.Window = TimeSpan.FromSeconds(2); //TODO change me
     }
 ));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "myCorsPolicy",
+        policy =>
+        {
+            policy.WithOrigins("http://127.0.0.1", "https://www.fourscore.dev", "https://john-on-git.github.io");
+        }
+    );
+});
 
 var app = builder.Build();
 
@@ -75,14 +80,21 @@ app.MapGet(
 //insert a new article
 app.MapPost(
     $"/article/create",
-    async (string apiKey, string title, string authors, string HTMLSnippet, BlogContext db) =>
+    async (string apiKey, Article article, BlogContext db) =>
     {
         if (string.Equals(apiKey, correctAPIKey, StringComparison.InvariantCulture)) //ensure the client's authenticated
         {
-            //insert the new article
-            db.Articles.Add(new Article(title, authors, HTMLSnippet));
-            await db.SaveChangesAsync();
-            return Results.Created();
+            if(article.Id == null)
+            {
+                //insert the new article
+                db.Articles.Add(article);
+                await db.SaveChangesAsync();
+                return Results.Created();
+            }
+            else
+            {
+                return Results.BadRequest();
+            }
         }
         else
         {
@@ -94,14 +106,14 @@ app.MapPost(
 //update an article
 app.MapPut(
     $"/article/update",
-    async (string apiKey, uint id, string title, string authors, string HTMLSnippet, BlogContext db) =>
+    async (string apiKey, Article article, BlogContext db) =>
     {
         if (string.Equals(apiKey, correctAPIKey, StringComparison.InvariantCulture)) //ensure the client's authenticated
         {
             //update the record if it exists
-            if (db.Articles.Where(x => x.Id == id).Any())
+            if (db.Articles.Where(x => x.Id == article.Id).Any())
             {
-                db.Articles.Update(new Article(id, title, authors, HTMLSnippet));
+                db.Articles.Update(article);
                 await db.SaveChangesAsync();
                 return Results.Ok();
             }
@@ -142,3 +154,5 @@ app.MapDelete(
 
 
 app.Run();
+
+public partial class Program { } // allows the application defined in this file to be referenced in tests

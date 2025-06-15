@@ -1,6 +1,0 @@
-@JGWPersonalWebsiteBlogAPI_HostAddress = http://localhost:5042
-
-GET {{JGWPersonalWebsiteBlogAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

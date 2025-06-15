@@ -152,7 +152,7 @@ namespace JGWPersonalWebsiteBlogAPITests
             });
 
             // GET returns nothing
-            using var getRes = await client.DeleteAsync($"/article?id={articleToDelete.Id}");
+            using var getRes = await client.GetAsync($"/article?id={articleToDelete.Id}");
             Assert.Multiple(() =>
             {
                 Assert.That(getRes.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));

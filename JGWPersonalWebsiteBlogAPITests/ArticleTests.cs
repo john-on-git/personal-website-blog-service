@@ -173,7 +173,7 @@ namespace JGWPersonalWebsiteBlogAPITests
             });
 
             // GET returns nothing
-            using var getRes = await client.GetAsync($"/article?id={articleToDelete.Id}");
+            using var getRes = await client.GetAsync($"/article/details/?id={articleToDelete.Id}");
             var getResBody = await getRes.Content.ReadAsStringAsync();
             Assert.Multiple(() =>
             {

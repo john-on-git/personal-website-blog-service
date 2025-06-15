@@ -72,9 +72,18 @@ app.MapGet(
 //get an individual article. Not used at the moment, but it's a fairly standard operation so it's likely to come up at some point. future-proofing
 app.MapGet(
     $"/article/details",
-    async (uint id, BlogContext db) => await db.Articles
-        .Where(x => x.Id == id)
-        .SingleOrDefaultAsync()
+    async (uint id, BlogContext db) =>
+    {
+        var article = db.Articles.Find(id);
+        if(article!=null)
+        {
+            return Results.Ok(article);
+        }
+        else
+        {
+            return Results.NotFound();
+        }
+    }
 ).RequireRateLimiting("fixed");
 
 //insert a new article
@@ -93,12 +102,12 @@ app.MapPost(
             }
             else
             {
-                return Results.BadRequest();
+                return Results.BadRequest("ID must be null.");
             }
         }
         else
         {
-            return Results.Unauthorized();
+            return Results.Forbid();
         }
     }
 ).RequireRateLimiting("fixed");
@@ -111,14 +120,16 @@ app.MapPut(
         if (string.Equals(apiKey, correctAPIKey, StringComparison.InvariantCulture)) //ensure the client's authenticated
         {
             //update the record if it exists
-            if (db.Articles.Where(x => x.Id == article.Id).Any())
+            if (db.Articles.Any(x => x.Id == article.Id))
             {
                 var updated = db.Articles.Update(article);
                 await db.SaveChangesAsync();
                 return Results.Ok(updated.Entity);
             }
             else
-                return Results.BadRequest();
+            {
+                return Results.NotFound();
+            }
         }
         else
         {
@@ -134,15 +145,18 @@ app.MapDelete(
     {
         if (string.Equals(apiKey, correctAPIKey, StringComparison.InvariantCulture)) //ensure the client's authenticated
         {
-            //update the record if it exists
-            if (db.Articles.Where(x => x.Id == id).Any())
+            //delete the record if it exists
+            var toDelete = db.Articles.Find(id);
+            if(toDelete!=null)
             {
-                var removed = db.Articles.Remove(new Article(id, "", "", ""));
+                var deleted = db.Articles.Remove(toDelete);
                 await db.SaveChangesAsync();
-                return Results.Ok(removed.Entity);
+                return Results.Ok(deleted.Entity);
             }
             else
-                return Results.BadRequest();
+            {
+                return Results.NotFound();
+            }
         }
         else
         {

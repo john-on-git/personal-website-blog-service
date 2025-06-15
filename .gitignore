@@ -8,6 +8,8 @@ blog.dat-wal
 
 JGWPersonalWebsiteBlogAPI/bin/**
 JGWPersonalWebsiteBlogAPI/obj/**
+JGWPersonalWebsiteBlogAPI/.config/**
+JGWPersonalWebsiteBlogAPI/Properties/PublishProfiles**
 
 JGWPersonalWebsiteBlogAPITests/bin/**
 JGWPersonalWebsiteBlogAPITests/obj/**

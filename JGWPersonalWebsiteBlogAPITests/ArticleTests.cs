@@ -67,7 +67,7 @@ namespace JGWPersonalWebsiteBlogAPITests
             // arrange (nothing to do)
 
             // act
-            using var res = await client.GetAsync($"/article/index");
+            using var res = await client.GetAsync($"/article");
 
             // assert
 

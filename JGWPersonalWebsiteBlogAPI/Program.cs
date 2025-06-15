@@ -56,7 +56,7 @@ app.UseRateLimiter();
 //fetch articles in groups of 12
 const int PER_PAGE = 12;
 app.MapGet(
-    $"/article/index",
+    $"/article",
     async (uint? offset, BlogContext db) =>
     {
         offset ??= 0; //assign zero if null

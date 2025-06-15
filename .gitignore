@@ -6,8 +6,8 @@ blog.dat-wal
 .github
 .vs
 
-JGWPersonalWebsiteBlogAPI/bin/*
-JGWPersonalWebsiteBlogAPI/obj/*
+JGWPersonalWebsiteBlogAPI/bin/**
+JGWPersonalWebsiteBlogAPI/obj/**
 
-JGWPersonalWebsiteBlogAPITests/bin/*
-JGWPersonalWebsiteBlogAPITests/obj/*
+JGWPersonalWebsiteBlogAPITests/bin/**
+JGWPersonalWebsiteBlogAPITests/obj/**

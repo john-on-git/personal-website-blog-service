@@ -27,7 +27,8 @@ public class CustomWebApplicationFactory<TProgram>
                 1,
                 "Test Seed Article to be Deleted",
                 "Nunit Tests Seeding",
-                "Delete Me!")
+                "Delete Me!",
+                DateTime.UnixEpoch)
             );
             for (int i = 0; i < 98; i++)
             {

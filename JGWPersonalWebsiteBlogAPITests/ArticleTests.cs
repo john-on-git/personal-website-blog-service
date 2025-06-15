@@ -152,7 +152,8 @@ namespace JGWPersonalWebsiteBlogAPITests
                 1,
                 "Test Seed Article to be Deleted",
                 "Nunit Tests Seeding",
-                "Delete Me!"
+                "Delete Me!",
+                DateTime.UnixEpoch
             );
 
             // act

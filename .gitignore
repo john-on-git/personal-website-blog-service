@@ -3,5 +3,11 @@ blog.dat
 blog.dat-shm
 blog.dat-wal
 
-bin/*
-obj/*
+.github
+.vs
+
+JGWPersonalWebsiteBlogAPI/bin/*
+JGWPersonalWebsiteBlogAPIobj/*
+
+JGWPersonalWebsiteBlogAPITests/bin/*
+JGWPersonalWebsiteBlogAPITests/obj/*

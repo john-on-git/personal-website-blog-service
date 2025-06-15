@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JGWPersonalWebsiteBlogAPI", "JGWPersonalWebsiteBlogAPI\JGWPersonalWebsiteBlogAPI.csproj", "{F70EC598-6F6E-406B-AE99-4F6CF2502B75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JGWPersonalWebsiteBlogAPITests", "JGWPersonalWebsiteBlogAPITests\JGWPersonalWebsiteBlogAPITests.csproj", "{F2D6537E-A9CA-4769-A8C4-7184C7AE8108}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F70EC598-6F6E-406B-AE99-4F6CF2502B75} = {F70EC598-6F6E-406B-AE99-4F6CF2502B75}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F70EC598-6F6E-406B-AE99-4F6CF2502B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F70EC598-6F6E-406B-AE99-4F6CF2502B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F70EC598-6F6E-406B-AE99-4F6CF2502B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F70EC598-6F6E-406B-AE99-4F6CF2502B75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2D6537E-A9CA-4769-A8C4-7184C7AE8108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2D6537E-A9CA-4769-A8C4-7184C7AE8108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2D6537E-A9CA-4769-A8C4-7184C7AE8108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2D6537E-A9CA-4769-A8C4-7184C7AE8108}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7AF233D8-344D-4F86-BF0A-97D5B9270741}
+	EndGlobalSection
+EndGlobal

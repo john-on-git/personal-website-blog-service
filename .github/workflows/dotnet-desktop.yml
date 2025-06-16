@@ -81,6 +81,3 @@ jobs:
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test
-
-    - name: Code Coverage Summary
-      uses: irongut/CodeCoverageSummary@v1.3.0
